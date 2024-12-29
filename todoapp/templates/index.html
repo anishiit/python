@@ -4,18 +4,34 @@
 <div class="container">
     <h1>Todo App</h1>
     
+    <div class="stats">
+        <p>Pending: {{ pending_count }} | Completed: {{ completed_count }}</p>
+    </div>
+
     <form action="{{ url_for('add') }}" method="post">
-        <input type="text" name="todo" placeholder="Enter a todo...">
+        <input type="text" name="todo" placeholder="Enter a todo..." required>
         <button type="submit">Add Todo</button>
     </form>
 
     <ul class="todos">
         {% for todo in todos %}
-        <li>
-            {{ todo.task }}
-            <a href="{{ url_for('delete', index=loop.index0) }}" class="delete">×</a>
+        <li class="{{ 'completed' if todo.done else '' }}">
+            <span class="task">{{ todo.task }}</span>
+            <div class="actions">
+                <span class="date">{{ todo.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                <a href="{{ url_for('toggle', index=loop.index0) }}" class="toggle">
+                    ✓
+                </a>
+                <a href="{{ url_for('delete', index=loop.index0) }}" class="delete">×</a>
+            </div>
         </li>
         {% endfor %}
     </ul>
+
+    {% if completed_count > 0 %}
+    <div class="clear-completed">
+        <a href="{{ url_for('clear_completed') }}">Clear Completed Tasks</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
