@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Todo App</h1>
+    
+    <form action="{{ url_for('add') }}" method="post">
+        <input type="text" name="todo" placeholder="Enter a todo...">
+        <button type="submit">Add Todo</button>
+    </form>
+
+    <ul class="todos">
+        {% for todo in todos %}
+        <li>
+            {{ todo.task }}
+            <a href="{{ url_for('delete', index=loop.index0) }}" class="delete">×</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
